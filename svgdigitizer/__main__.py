@@ -70,7 +70,8 @@ def plot(svg, sampling_interval):
 def digitize(svg, sampling_interval):
     from svgdigitizer.svgplot import SVGPlot
     from svgdigitizer.svg import SVG
-    plot = SVGPlot(SVG(open(svg, 'rb')), sampling_interval=sampling_interval)
+    with open(svg, 'rb') as f:
+        plot = SVGPlot(SVG(f), sampling_interval=sampling_interval)
     from pathlib import Path
     plot.df.to_csv(Path(svg).with_suffix('.csv'), index=False)
 
@@ -121,7 +122,8 @@ def cv(svg, sampling_interval, metadata, package, outdir):
     os.makedirs(str(outdir), exist_ok=True)
 
     # Determine unit of the voltage scale.
-    cv = CV(SVGPlot(SVG(open(svg, 'rb'))))
+    with open(svg, 'rb') as f:
+        cv = CV(SVGPlot(SVG(f)))
     xunit = CV.get_axis_unit(cv.x_label.unit)
     if not xunit == u.V:
         # Determine conversion factor to volts.
@@ -131,7 +133,8 @@ def cv(svg, sampling_interval, metadata, package, outdir):
     if metadata:
         metadata = yaml.load(metadata, Loader=yaml.SafeLoader)
 
-    cv = CV(SVGPlot(SVG(open(svg, 'rb')), sampling_interval=sampling_interval), metadata=metadata)
+    with open(svg, 'rb') as f:
+        cv = CV(SVGPlot(SVG(f), sampling_interval=sampling_interval), metadata=metadata)
 
     from pathlib import Path
     csvname = Path(svg).with_suffix('.csv').name

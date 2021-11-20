@@ -48,7 +48,8 @@ from svgdigitizer.svg import SVG
 
 svgfile = f'svgdigitizer/test/data/xy_rate.svg'
     
-svgplot = SVGPlot(SVG(open(svgfile, 'rb')))
+with open(svgfile, 'rb') as file:
+  svgplot = SVGPlot(SVG(file))
 ```
 
 `svgplot.df` provides a dataframe of the digitized curve.  
@@ -67,7 +68,8 @@ from svgdigitizer.electrochemistry.cv import CV
 
 svgfile = f'svgdigitizer/test/data/xy_rate.svg'
     
-cv = CV(SVGPlot(SVG(open(svgfile, 'rb'))))
+with open(svgfile, 'rb') as file:
+  cv = CV(SVGPlot(SVG(file)))
 ```
 
 `cv.df` provides a dataframe with a time, voltage and current axis (in SI units). Depending on the type of data the current is expressed as current `I` in `A` or a current density `j` in `A / m2`.
@@ -94,8 +96,9 @@ from svgdigitizer.electrochemistry.cv import CV
 svgfile = f'svgdigitizer/test/data/xy_rate.svg'
 yamlfile = f'svgdigitizer/test/data/xy_rate.yaml'
 
-with open(yamlfile) as f:
-    metadata = yaml.load(f, Loader=yaml.FullLoader)
+with open(yamlfile) as file:
+    metadata = yaml.load(file, Loader=yaml.FullLoader)
 
-cv = CV(SVGPlot(SVG(open(svgfile, 'rb'))), metadata=metadata)
+with open(svgfile, 'rb') as file:
+  cv = CV(SVGPlot(SVG(file)), metadata=metadata)
 ```
